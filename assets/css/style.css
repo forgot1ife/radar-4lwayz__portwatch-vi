@@ -468,6 +468,63 @@ html:not([lang="en"]) .nav-links a { padding-inline: 9px; }
 .ov-history svg { width: 100%; height: 70px; display: block; }
 .ov-history p { margin: 0 0 6px; font-size: 12px; color: var(--muted); font-weight: 600; }
 
+/* ---------- Team bars: a team's own goals, under the headline, collapsed by default ---------- */
+/* Yellow-to-orange, so a team bar never reads as part of the race's purple-to-orange scale. */
+:root { --wl-grad: linear-gradient(90deg, #ffd43b 0%, #ffad1f 50%, #ff7417 100%); --wl-text: linear-gradient(90deg, #df9500, #f0600a); --fg-wl: #a45200; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --wl-text: linear-gradient(90deg, #ffd43b, #ff8f2a); --fg-wl: #ffb45c; } }
+:root[data-theme="dark"] { --wl-text: linear-gradient(90deg, #ffd43b, #ff8f2a); --fg-wl: #ffb45c; }
+.team-bars { display: grid; gap: 12px; margin-top: 14px; }
+.team-bars[hidden] { display: none; }
+.team { position: relative; overflow: hidden; border-radius: var(--radius); }
+.team::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--wl-grad); }
+.team-head {
+  display: grid; grid-template-columns: 44px auto minmax(0, 1fr) auto auto; grid-template-areas: "av title bar score toggle";
+  align-items: center; gap: 18px; padding: 18px 22px 16px;
+  list-style: none; cursor: pointer; user-select: none; transition: background .15s;
+}
+.team-head::-webkit-details-marker { display: none; }
+.team-head:hover { background: var(--soft); }
+.team-head:focus-visible { outline-offset: -4px; border-radius: var(--radius); }
+.team-avatar { grid-area: av; width: 44px; height: 44px; border-radius: 12px; object-fit: cover; background: var(--soft-2); box-shadow: 0 0 0 2px #ffad1f, 0 4px 14px rgba(255, 140, 20, .3); display: grid; place-items: center; font-weight: 800; color: var(--ink-2); }
+.team-title { grid-area: title; display: flex; flex-direction: column; min-width: 0; }
+.team-title .kicker { margin: 0 0 2px; font-size: 11px; }
+.team-name { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; font-family: var(--display); font-size: 20px; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+.team-private { display: inline-flex; align-items: center; gap: 4px; font-family: var(--body); font-size: 11.5px; font-weight: 700; letter-spacing: 0; color: var(--fg-wl); white-space: nowrap; }
+.team-private .pb-lock { width: 11px; height: 11px; }
+.team-head .bar-track { grid-area: bar; display: block; height: 16px; }
+.team .bar-fill { background: var(--wl-grad); }
+.team-score { grid-area: score; min-width: 2.4em; text-align: right; font-family: var(--display); font-size: 36px; font-weight: 900; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; background: var(--wl-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.team-score small { font-size: .5em; letter-spacing: 0; }
+.team-toggle { grid-area: toggle; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.team-toggle::after { content: ""; width: 6px; height: 6px; margin-top: -3px; border: solid currentColor; border-width: 0 1.8px 1.8px 0; transform: rotate(45deg); transition: transform .2s; }
+.team[open] .team-toggle::after { margin-top: 3px; transform: rotate(-135deg); }
+.team .team-hide, .team[open] .team-show { display: none; }
+.team[open] .team-hide { display: inline; }
+.team-body { padding: 18px 22px 20px; border-top: 1px dashed var(--line); }
+.team-summary { margin: 0; max-width: 86ch; color: var(--ink-2); }
+.team-parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; margin-top: 16px; }
+.tp-head { display: flex; align-items: baseline; gap: 8px; margin: 0 0 6px; font-size: 14px; }
+.tp-head span { color: var(--muted); font-size: 12px; font-weight: 600; }
+.tp-head .tp-val { margin-left: auto; font-family: var(--display); font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.team-part .bar-track { height: 8px; }
+.team-part .bar-fill::after { display: none; }
+.tp-note { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.team-goals-title { margin: 18px 0 8px; font-family: var(--body); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.team-goals { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.team-goals li { padding: 4px 11px; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.team-access { display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 0; padding: 10px 14px; border-radius: 12px; background: var(--alert-bg); font-size: 13.5px; color: var(--ink-2); }
+.team-access .pb-lock { margin-top: 3px; color: var(--fg-wl); }
+.team-foot { margin: 12px 0 0; font-size: 12px; color: var(--faint); }
+@media (max-width: 640px) {
+  .team-head { grid-template-columns: 40px minmax(0, 1fr) auto; grid-template-areas: "av title score" "bar bar toggle"; gap: 12px; padding: 16px 16px 14px; }
+  .team-avatar { width: 40px; height: 40px; }
+  .team-score { font-size: 30px; }
+  .team-toggle { justify-self: end; justify-content: center; width: 34px; height: 26px; padding: 0; }
+  .team-toggle > span { display: none !important; }
+  .team-body { padding: 16px 16px 18px; }
+  .team-parts { grid-template-columns: 1fr; }
+}
+
 /* ---------- Sections ---------- */
 .section { margin-top: 88px; }
 .changes-section { margin-top: 26px; }

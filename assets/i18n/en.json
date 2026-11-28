@@ -142,6 +142,11 @@
   "private.evidenceTitle": "How PortWatch knows about this build",
   "private.noCode": "No public code",
   "private.article": "Read our report",
+  "team.kicker": "Team progress",
+  "team.barLabel": "{name}'s progress towards its goals",
+  "team.counts": "counts for {n}%",
+  "team.goals": "Goals",
+  "team.updated": "Updated {date}",
 
   "news.kicker": "What's happening",
   "news.title": "News",

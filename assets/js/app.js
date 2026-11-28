@@ -86,6 +86,7 @@ async function main() {
   startCountdown(data.exe || {});
   pinned.then((p) => fillPinned($('#pinned'), p, { ago, when: (iso) => new Date(iso).toLocaleString(locale()) }));
   renderOverall(data);
+  renderTeamBars(data.teamBars || []);
   renderChanges(data.changes || []);
   renderFilterChips();
   renderRace();
@@ -319,6 +320,57 @@ function renderHistory(history) {
       <path d="${d} L${W} ${H} L0 ${H} Z" fill="url(#hf)"/>
       <path d="${d}" fill="none" stroke="url(#hg)" stroke-width="3" vector-effect="non-scaling-stroke"/>
     </svg>`;
+}
+
+/* ---------- Team bars ----------
+   A team tracked on its own goals rather than on the race's scale (owner's call, 2026-11-28: Whiplash).
+   Its score is its parts' progress, weighted; it isn't ranked and doesn't count in the headline.
+   Each card is a <details>, so it starts collapsed and opens without any script. */
+const weightOf = (part) => Math.max(0, +part.weight || 0);
+function teamScore(parts) {
+  const total = parts.reduce((s, p) => s + weightOf(p), 0);
+  return total ? (parts.reduce((s, p) => s + Math.max(0, Math.min(1, +p.value || 0)) * weightOf(p), 0) / total) * 100 : 0;
+}
+
+function renderTeamBars(teams) {
+  const list = teams.filter((tm) => tm.name && tm.parts?.length);
+  const box = $('#team-bars');
+  box.hidden = !list.length;
+  box.innerHTML = list.map(teamCard).join('');
+}
+
+function teamCard(tm) {
+  const score = teamScore(tm.parts);
+  const total = tm.parts.reduce((s, p) => s + weightOf(p), 0);
+  const src = /^assets\/img\/[\w/.-]+$/.test(tm.avatar || '') ? tm.avatar : '';
+  const parts = tm.parts.map((p) => {
+    const v = Math.max(0, Math.min(1, +p.value || 0)) * 100;
+    return `<div class="team-part">
+      <p class="tp-head"><b>${esc(p.label)}</b>${total ? `<span>${esc(t('team.counts', { n: Math.round((weightOf(p) / total) * 100) }))}</span>` : ''}<b class="tp-val">${pct(v)}%</b></p>
+      <div class="bar-track"><div class="bar-fill" data-width="${v}"></div></div>
+      ${p.note ? `<p class="tp-note">${esc(p.note)}</p>` : ''}
+    </div>`;
+  }).join('');
+  return `
+  <details class="team card" id="team-${esc(tm.id)}">
+    <summary class="team-head">
+      ${src ? `<img class="team-avatar" src="${esc(src)}" alt="" loading="lazy" data-hide-on-error>` : `<span class="team-avatar" aria-hidden="true">${esc(tm.name.slice(0, 2))}</span>`}
+      <span class="team-title">
+        <span class="kicker">${esc(t('team.kicker'))}</span>
+        <span class="team-name">${esc(tm.name)}${tm.access ? `<span class="team-private"><span class="pb-lock" aria-hidden="true"></span>${esc(t('effort.privateBadge'))}</span>` : ''}</span>
+      </span>
+      <span class="bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(score)}" aria-label="${esc(t('team.barLabel', { name: tm.name }))}"><span class="bar-fill" data-width="${score}"></span></span>
+      <span class="team-score">${pct(score)}<small>%</small></span>
+      <span class="team-toggle"><span class="team-show">${esc(t('effort.details'))}</span><span class="team-hide">${esc(t('effort.hideDetails'))}</span></span>
+    </summary>
+    <div class="team-body">
+      ${tm.summary ? `<p class="team-summary">${esc(tm.summary)}</p>` : ''}
+      <div class="team-parts">${parts}</div>
+      ${tm.goals?.length ? `<h4 class="team-goals-title">${esc(t('team.goals'))}</h4><ul class="team-goals">${tm.goals.map((g) => `<li>${esc(g)}</li>`).join('')}</ul>` : ''}
+      ${tm.access ? `<p class="team-access"><span class="pb-lock" aria-hidden="true"></span>${esc(tm.access)}</p>` : ''}
+      ${tm.updatedAt ? `<p class="team-foot">${esc(t('team.updated', { date: fmtDay(tm.updatedAt) }))}</p>` : ''}
+    </div>
+  </details>`;
 }
 
 /* ---------- Changes ---------- */

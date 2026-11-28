@@ -14,6 +14,37 @@
     "note": "Cyberleek posted on Monday, Nov 23 at 15:36 CET (14:36 UTC) that the missing executable is out, about 2.5 hours before its own 18:00 CET deadline. XDA Developers, DSOGaming and other outlets have since reported the release, but none has shown the file is genuine and Rockstar hasn't confirmed the leak. Several projects now run the game's own code, and two report reaching its menus.",
     "source": "https://www.xda-developers.com/gta-6-xbox-executable-leaked-opening-door-for-pc-recompilation-projects-begin-testing/"
   },
+  "teamBars": [
+    {
+      "id": "whiplash",
+      "name": "Whiplash",
+      "avatar": "assets/img/efforts/whiplash.jpg",
+      "summary": "Whiplash is working towards a 1:1 match with the Xbox Series X version on medium-to-high-end PCs: rendered at 1440p native, like the Series X, then upscaled to 4K.",
+      "parts": [
+        {
+          "label": "Visual parity",
+          "value": 0.9,
+          "weight": 4,
+          "note": "How close the picture is to the Series X version, including ray tracing on NVIDIA and AMD."
+        },
+        {
+          "label": "Memory usage",
+          "value": 0.2,
+          "weight": 3,
+          "note": "Video memory use is still too high for most graphics cards, which keeps the build out of reach for most PCs."
+        }
+      ],
+      "goals": [
+        "1440p native, upscaled to 4K",
+        "1:1 visuals with the Series X",
+        "Ray tracing on NVIDIA and AMD",
+        "Video memory use most PCs can handle",
+        "30 fps on medium-to-high-end PCs"
+      ],
+      "access": "Private: builds are shared only inside the team's own server and aren't hosted or linked anywhere, so a download that claims to be Whiplash's is fake.",
+      "updatedAt": "2026-11-28"
+    }
+  ],
   "news": [
     {
       "id": "2026-11-27-belobug-dmca",
