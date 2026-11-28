@@ -43,12 +43,14 @@
         }
       ],
       "goals": [
+        "Windows, with possible Linux support (experimental)",
         "1440p native, upscaled to 4K",
         "1:1 visuals with the Series X",
         "Ray tracing on NVIDIA and AMD",
         "Video memory use most PCs can handle",
         "30 fps on medium-to-high-end PCs"
       ],
+      "later": "The team might work on support for lower-end PCs.",
       "access": "Private: builds are shared only inside the team's own server and aren't hosted or linked anywhere, so a download that claims to be Whiplash's is fake.",
       "updatedAt": "2026-11-28"
     }

@@ -200,6 +200,7 @@
   "team.barLabel": "Progresso de {name} rumo às metas",
   "team.counts": "vale {n}%",
   "team.goals": "Metas",
+  "team.later": "Depois dos 100%:",
   "team.updated": "Atualizado em {date}",
 
   "news.kicker": "O que está acontecendo",

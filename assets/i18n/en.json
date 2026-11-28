@@ -146,6 +146,7 @@
   "team.barLabel": "{name}'s progress towards its goals",
   "team.counts": "counts for {n}%",
   "team.goals": "Goals",
+  "team.later": "After 100%:",
   "team.updated": "Updated {date}",
 
   "news.kicker": "What's happening",

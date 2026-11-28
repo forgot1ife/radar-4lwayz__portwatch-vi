@@ -371,6 +371,7 @@ function teamCard(tm) {
       ${tm.summary ? `<p class="team-summary">${esc(tm.summary)}</p>` : ''}
       <div class="team-parts">${parts}</div>
       ${tm.goals?.length ? `<h4 class="team-goals-title">${esc(t('team.goals'))}</h4><ul class="team-goals">${tm.goals.map((g) => `<li>${esc(g)}</li>`).join('')}</ul>` : ''}
+      ${tm.later ? `<p class="team-later"><b>${esc(t('team.later'))}</b> ${esc(tm.later)}</p>` : ''}
       ${tm.access ? `<p class="team-access"><span class="pb-lock" aria-hidden="true"></span>${esc(tm.access)}</p>` : ''}
       ${tm.updatedAt ? `<p class="team-foot">${esc(t('team.updated', { date: fmtDay(tm.updatedAt) }))}</p>` : ''}
     </div>
