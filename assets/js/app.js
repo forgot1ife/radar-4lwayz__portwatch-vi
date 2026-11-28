@@ -327,9 +327,12 @@ function renderHistory(history) {
    Its score is its parts' progress, weighted; it isn't ranked and doesn't count in the headline.
    Each card is a <details>, so it starts collapsed and opens without any script. */
 const weightOf = (part) => Math.max(0, +part.weight || 0);
+// A part is a `value` from 0 to 1, or a `current` reading against a `target` (17 of 30 fps), capped at the target.
+const hasTarget = (part) => +part.target > 0;
+const partValue = (part) => Math.max(0, Math.min(1, hasTarget(part) ? (+part.current || 0) / part.target : +part.value || 0));
 function teamScore(parts) {
   const total = parts.reduce((s, p) => s + weightOf(p), 0);
-  return total ? (parts.reduce((s, p) => s + Math.max(0, Math.min(1, +p.value || 0)) * weightOf(p), 0) / total) * 100 : 0;
+  return total ? (parts.reduce((s, p) => s + partValue(p) * weightOf(p), 0) / total) * 100 : 0;
 }
 
 function renderTeamBars(teams) {
@@ -344,9 +347,10 @@ function teamCard(tm) {
   const total = tm.parts.reduce((s, p) => s + weightOf(p), 0);
   const src = /^assets\/img\/[\w/.-]+$/.test(tm.avatar || '') ? tm.avatar : '';
   const parts = tm.parts.map((p) => {
-    const v = Math.max(0, Math.min(1, +p.value || 0)) * 100;
+    const v = partValue(p) * 100;
+    const shown = hasTarget(p) ? `${pct(+p.current || 0)} / ${pct(+p.target)}${p.unit ? ` ${p.unit}` : ''}` : `${pct(v)}%`;
     return `<div class="team-part">
-      <p class="tp-head"><b>${esc(p.label)}</b>${total ? `<span>${esc(t('team.counts', { n: Math.round((weightOf(p) / total) * 100) }))}</span>` : ''}<b class="tp-val">${pct(v)}%</b></p>
+      <p class="tp-head"><b>${esc(p.label)}</b>${total ? `<span>${esc(t('team.counts', { n: Math.round((weightOf(p) / total) * 100) }))}</span>` : ''}<b class="tp-val">${esc(shown)}</b></p>
       <div class="bar-track"><div class="bar-fill" data-width="${v}"></div></div>
       ${p.note ? `<p class="tp-note">${esc(p.note)}</p>` : ''}
     </div>`;

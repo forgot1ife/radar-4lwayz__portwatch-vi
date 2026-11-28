@@ -52,7 +52,7 @@ Everything lives in `data/tracker.json`:
 - `efforts[]`: each effort has a `tier` (`tracked` puts it in the race, `watchlist` lists it below). Each also carries `groundwork` (four 0–1 values), `gta` (`loads`/`boots`/`menu`/`ingame` are 0, 0.5 or 1, plus `fps` and `stability`), and short `highlights` and `blockers`.
 - `exe`: drives the countdown. If the release time is announced, set `expectedAt` (ISO time) and `timeAnnounced: true`. When it drops, set `status: "released"` and `releasedAt`, and the countdown turns into a "time since release" clock.
 - `candidates[]`: move one into `efforts` to promote it, or into `ignored` to dismiss it.
-- `teamBars[]`: a team tracked on its own goals, shown as a collapsed card under the headline bar. Each has `parts` (`label`, `value` from 0 to 1, `weight`, `note`), and its score is their weighted average. `avatar`, `summary`, `goals`, `access` and `updatedAt` are optional. Team bars aren't ranked and don't count in the headline.
+- `teamBars[]`: a team tracked on its own goals, shown as a collapsed card under the headline bar. Each has `parts` (`label`, `weight`, `note`, and either `value` from 0 to 1 or `current` against `target` with a `unit`, such as 17 of 30 fps), and its score is their weighted average. `avatar`, `summary`, `goals`, `access` and `updatedAt` are optional. Team bars aren't ranked and don't count in the headline.
 - `site.heroImage`: the hero photo (see below). An optional `site.heroCredit` adds a credit line under it.
 
 Scoring is in `assets/js/scoring.js`, shared by the site and the scout. Groundwork fills 0–25%. After that, milestones sit at Exe runs 25, First frame 40, Main menu 55, In-game 70, 30 FPS 85 and Stable 100.

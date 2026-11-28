@@ -24,14 +24,22 @@
         {
           "label": "Visual parity",
           "value": 0.9,
-          "weight": 4,
+          "weight": 7,
           "note": "How close the picture is to the Series X version, including ray tracing on NVIDIA and AMD."
         },
         {
           "label": "Memory usage",
           "value": 0.2,
-          "weight": 3,
+          "weight": 5,
           "note": "Video memory use is still too high for most graphics cards, which keeps the build out of reach for most PCs."
+        },
+        {
+          "label": "Frame rate",
+          "current": 17,
+          "target": 30,
+          "unit": "fps",
+          "weight": 3,
+          "note": "Frames per second now, against the 30 fps goal."
         }
       ],
       "goals": [
